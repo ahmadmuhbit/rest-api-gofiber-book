@@ -1,19 +1,12 @@
 package book
 
-import "github.com/gofiber/fiber"
+import (
+	"gorm.io/gorm"
+)
 
-func GetBooks(c *fiber.Ctx) {
-	c.Send("All Books")
-}
-
-func GetBook(c *fiber.Ctx) {
-	c.Send("Single Book")
-}
-
-func NewBook(c *fiber.Ctx) {
-	c.Send("New Book")
-}
-
-func DeleteBook(c *fiber.Ctx) {
-	c.Send("Delete Book")
+type Book struct {
+	gorm.Model
+	Title  string `json:"name"`
+	Author string `json:"author"`
+	Rating int    `json:"rating"`
 }
