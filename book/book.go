@@ -8,7 +8,7 @@ import (
 
 type Book struct {
 	gorm.Model
-	Title  string `json:"name"`
+	Title  string `json:"title"`
 	Author string `json:"author"`
 	Rating int    `json:"rating"`
 }
@@ -28,12 +28,23 @@ func GetBook(c *fiber.Ctx) {
 	c.JSON(book)
 }
 
+// func NewBook(c *fiber.Ctx) {
+// 	db := database.DBConn
+// 	var book Book
+// 	book.Title = "1984"
+// 	book.Author = "GeorgeOrwell"
+// 	book.Rating = 5
+// 	db.Create(&book)
+// 	c.JSON(book)
+// }
+
 func NewBook(c *fiber.Ctx) {
 	db := database.DBConn
-	var book Book
-	book.Title = "1984"
-	book.Author = "GeorgeOrwell"
-	book.Rating = 5
+	book := new(Book)
+	if err := c.BodyParser(book); err != nil {
+		c.Status(503).Send(err)
+		return
+	}
 	db.Create(&book)
 	c.JSON(book)
 }
